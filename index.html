@@ -279,7 +279,7 @@ h1{font-size:clamp(26px,4vw,40px);font-weight:600;margin:0 0 8px;letter-spacing:
       <div class="panel" id="panel" hidden></div>
     </section>
 
-    <p class="popular"><b>Popular:</b><a href="#" data-pick>Affidavit</a>,<a href="#" data-pick>Bill of Sale</a>,<a href="#" data-pick>Last Will and Testament</a>,<a href="#" data-pick>Living Will</a>,<a href="#" data-pick>Power of Attorney</a></p>
+    <p class="popular"><b>Popular:</b><a href="#" data-pick>Affidavit</a>,<a href="#" data-pick>Last Will and Testament</a>,<a href="#" data-pick>Living Will</a>,<a href="#" data-pick>Power of Attorney</a></p>
   </div>
 
   <section class="az" aria-labelledby="azTitle">
@@ -531,8 +531,8 @@ document.querySelectorAll("[data-pick]").forEach(a=>a.onclick=e=>{e.preventDefau
 
 /* ---------- A–Z list + tooltips ---------- */
 const AZ_LETTERS="ABCDEFGHIJLMNOPQRSTVW".split("");
-$("azNav").innerHTML=AZ_LETTERS.map(l=>AZ[l]?`<li><a href="#az-${l}">${l}</a></li>`:`<li><span aria-disabled="true">${l}</span></li>`).join("");
-$("azCols").innerHTML=Object.keys(AZ).map(l=>`<div class="az-group" id="az-${l}"><h3>${l}</h3><ul>${AZ[l].map(d=>`<li><a href="#" onclick="return false" data-doc="${esc(d)}">${esc(d)}</a>${tagHTML(d)}</li>`).join("")}</ul></div>`).join("");
+$("azNav").innerHTML=AZ_LETTERS.map(l=>AZ[l]&&l!=="B"?`<li><a href="#az-${l}">${l}</a></li>`:`<li><span aria-disabled="true">${l}</span></li>`).join("");
+$("azCols").innerHTML=Object.keys(AZ).filter(l=>l!=="B").map(l=>`<div class="az-group" id="az-${l}"><h3>${l}</h3><ul>${AZ[l].map(d=>`<li><a href="#" onclick="return false" data-doc="${esc(d)}">${esc(d)}</a>${tagHTML(d)}</li>`).join("")}</ul></div>`).join("");
 (function(){
   const tip=document.createElement("div"); tip.className="doc-tip"; tip.id="docTip"; tip.setAttribute("role","tooltip"); tip.hidden=true; document.body.appendChild(tip);
   let timer=null,current=null,lastHide=0;
