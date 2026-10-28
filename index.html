@@ -441,8 +441,9 @@ function paintHL(){
 }
 function pick(i){
   const it=S.items[i]; if(!it) return;
-  if(it.type==="ai") askAI(S.q); else openDoc(it.name);
+  if(it.type==="ai") askAI(S.q); else completeTask();
 }
+function completeTask(){ window.location.assign(new URL("done/", new URL(".", window.location.href)).href); }
 function openDoc(name){
   setOpen(false); q.value=name; $("clear").hidden=false;
   toast(`Opening ${name}…`);
@@ -511,7 +512,7 @@ q.addEventListener("keydown",e=>{
     else if(e.key==="Enter"){e.preventDefault();
       if(S.hl>=0) pick(S.hl);
       else { const docs=S.items.filter(x=>x.type==="doc");
-        if(!docs.length||looksLikeSentence(q.value)) askAI(q.value.trim()); else openDoc(docs[0].name); } }
+        if(!docs.length||looksLikeSentence(q.value)) askAI(q.value.trim()); else completeTask(); } }
     else if(e.key==="Escape"){setOpen(false);}
   } else if(S.mode==="ai"){
     if(e.key==="Enter"){e.preventDefault(); askAI(q.value.trim());}
@@ -522,7 +523,7 @@ $("clear").onclick=()=>{ q.value=""; renderResults(); q.focus(); };
 panel.addEventListener("mousedown",e=>{ if(e.target.closest("button")&&!e.target.closest(".compose")) e.preventDefault(); });
 panel.addEventListener("click",e=>{
   const o=e.target.closest("[data-i]"); if(o){ pick(+o.dataset.i); return; }
-  const d=e.target.closest("[data-open]"); if(d){ openDoc(d.dataset.open); return; }
+  const d=e.target.closest("[data-open]"); if(d){ completeTask(); return; }
   const s=e.target.closest("[data-say]"); if(s&&!S.thinking){ askAI(s.dataset.say,false); }
 });
 panel.addEventListener("mousemove",e=>{ const o=e.target.closest("[data-i]"); if(o&&+o.dataset.i!==S.hl){S.hl=+o.dataset.i;paintHL();} });
